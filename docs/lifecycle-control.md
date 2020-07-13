@@ -411,7 +411,7 @@ The **migrate** method takes an established hypervisor connection, and instructs
 migrateToURI(self, duri, flags=0, dname=None, bandwidth=0)
 ```
 
-The **migrateToUri** method takes a URI specifying a hypervisor connection, opens the connection, then instructions the domain to migrate to this connection. Both these methods can be passed a parameter to specify live migration. For migration to complete successfully, storage needs to be shared between the source and target hypervisors.
+The **migrateToURI** method takes a URI specifying a hypervisor connection, opens the connection, then instructions the domain to migrate to this connection. Both these methods can be passed a parameter to specify live migration. For migration to complete successfully, storage needs to be shared between the source and target hypervisors.
 
 The first parameter of the **migrate** method specifies the connection to be used to the target of the migration. This parameter is required.
 
