@@ -3,7 +3,6 @@ site_url: https://libvirt.org
 repo_url: https://github.com/rst0git/libvirt-python-docs
 
 nav:
-  - libvirt-python: index.md
   - Capabilities: capabilities.md
   - Connections: connections.md
   - Device configuration: device-config.md
