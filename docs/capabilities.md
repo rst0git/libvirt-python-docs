@@ -152,7 +152,7 @@ A required element that describes the type of guest.
 <center>
 
 | Driver | Guest Type |
-| - | - |
+| - | :- |
 | qemu | Always "hvm" |
 | xen | Either "xen" for a paravirtualized guest or "hvm" for a fully virtualized guest |
 | uml | Always "uml" |
