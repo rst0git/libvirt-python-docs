@@ -1,0 +1,8 @@
+mkdocs
+fontawesome-markdown
+mkdocs-git-revision-date-localized-plugin
+mkdocs-material
+tornado
+markdown
+markdown-include
+pygments

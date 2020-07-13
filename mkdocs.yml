@@ -1,0 +1,27 @@
+site_name: libvirt-python
+site_url: https://libvirt.org
+repo_url: https://github.com/rst0git/libvirt-python-docs
+
+nav:
+  - libvirt-python: index.md
+  - Capabilities: capabilities.md
+  - Connections: connections.md
+  - Device configuration: device-config.md
+  - Domain configuration: domain-config.md
+  - Exceptions: exceptions.md
+  - Host information: host-info.md
+  - Lifecycle control: lifecycle-control.md
+  - Live configuration change: live-config-change.md
+  - Monitoring performance: monitoring-performance.md
+  - Storage pools: storage-pools.md
+  - URI formats: uri-format.md
+theme:
+  name: readthedocs
+  favicon: img/favicon.ico
+
+markdown_extensions:
+    - admonition
+    - codehilite
+    - def_list
+    - toc:
+        permalink: true
