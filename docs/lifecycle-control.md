@@ -399,7 +399,19 @@ In addition to the **restore** method, the alternative method **restoreFlags** i
 
 ### Migration
 
-Migration is the process of taking the image of a guest domain and moving it somewhere, typically from a hypervisor on one node to a hypervisor on another node. There are two methods for migration. The **migrate** method takes an established hypervisor connection, and instructs the domain to migrate to this connection. The **migrateToUri** method takes a URI specifying a hypervisor connection, opens the connection, then instructions the domain to migrate to this connection. Both these methods can be passed a parameter to specify live migration. For migration to complete successfully, storage needs to be shared between the source and target hypervisors.
+Migration is the process of taking the image of a guest domain and moving it somewhere, typically from a hypervisor on one node to a hypervisor on another node. There are two methods for migration.
+
+```python
+migrate(self, dconn, flags=0, dname=None, uri=None, bandwidth=0)
+```
+
+The **migrate** method takes an established hypervisor connection, and instructs the domain to migrate to this connection.
+
+```python
+migrateToURI(self, duri, flags=0, dname=None, bandwidth=0)
+```
+
+The **migrateToUri** method takes a URI specifying a hypervisor connection, opens the connection, then instructions the domain to migrate to this connection. Both these methods can be passed a parameter to specify live migration. For migration to complete successfully, storage needs to be shared between the source and target hypervisors.
 
 The first parameter of the **migrate** method specifies the connection to be used to the target of the migration. This parameter is required.
 

@@ -36,7 +36,7 @@ Storage pools are the containers for storage volumes. A system may have as many 
 A list of storage pool objects can be obtained using the **listAllStoragePools** method of the **virConnect** class.
 
 ```python
-listAllStoragePools(self, flags=0):
+listAllStoragePools(self, flags=0)
 ```
 
 The *flags* parameter can be one or more of the following constants:

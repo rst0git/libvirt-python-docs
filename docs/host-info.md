@@ -5,7 +5,7 @@ There are various **virConnection** methods that can be used to get information 
 ## getHostname
 
 ```python
-getHostname(self):
+getHostname(self)
 ```
 
 This returns a system hostname on which the hypervisor is running (based on the result of the gethostname system call, but possibly expanded to a fully-qualified domain name via getaddrinfo). If we are connected to a remote system, then this returns the hostname of the remote system.
@@ -29,7 +29,7 @@ conn.close()
 ## getMaxVcpus
 
 ```python
-getMaxVcpus(self, type):
+getMaxVcpus(self, type)
 ```
 
 This method can be used to obtain the maximum number of virtual CPUs per-guest the underlying virtualization technology supports. It takes a virtualization *type* as input (which can be **None**), and if successful, returns the number of virtual CPUs supported. If an error occurred, -1 is returned instead. The following code demonstrates the use of **getMaxVcpus**:
@@ -52,7 +52,7 @@ conn.close()
 ## getInfo
 
 ```python
-getInfo(self):
+getInfo(self)
 ```
 
  This method can be used to obtain various information about the virtualization host. The method returns a **list** if successful and **None** if an error occurred. The list contains the following members:
@@ -126,7 +126,7 @@ conn.close()
 ## getType
 
 ```python
-getType(self):
+getType(self)
 ```
 
 This method can be used to obtain the type of virtualization in use on this connection. If successful it returns a **string** representing the type of virtualization in use. If an error occurred, **None** will be returned instead.
@@ -134,7 +134,7 @@ This method can be used to obtain the type of virtualization in use on this conn
 ## getVersion
 
 ```python
-getVersion(name=None):
+getVersion(name=None)
 ```
 
 - If no *name* parameter is passed (or *name* is **None**) then the version of the libvirt library is returned as number. Versions numbers are integers:
@@ -162,7 +162,7 @@ conn.close()
 ## getLibVersion
 
 ```python
-getLibVersion(self):
+getLibVersion(self)
 ```
 
 This method can be used to obtain the version of the libvirt software in use on the host. If successful it returns a **string** with the version, otherwise it returns **None**.
@@ -185,7 +185,7 @@ conn.close()
 ## getURI
 
 ```python
-getURI(self):
+getURI(self)
 ```
 
 The **getURI** method can be used to obtain the URI for the current connection. While this is typically the same string that was passed into the **open** call, the underlying driver can sometimes canonicalize the string. This method will return the canonical version. If successful, it returns a URI **string**. If an error occurred, **None** will be returned instead. The following code demonstrates the use of getURI:
@@ -208,7 +208,7 @@ conn.close()
 ## isEncrypted
 
 ```python
-isEncrypted(self):
+isEncrypted(self)
 ```
 
 This method can be used to find out if a given connection is encrypted. If successful it returns **1** for an encrypted connection and **0** for an unencrypted connection. If an error occurred, **-1** will be returned. The following code demonstrates the use of **isEncrypted**:
@@ -230,7 +230,7 @@ conn.close()
 ## isSecure
 
 ```python
-isSecure(self):
+isSecure(self)
 ```
 
 This method can be used to find out if a given connection is classified as secure. A connection will be classified secure if it is either encrypted or it is running on a channel which is not vulnerable to eavesdropping (like a UNIX domain socket). If successful it returns **1** for a secure connection and **0** for an insecure connection. If an error occurred, **-1** will be returned. The following code demonstrates the use of **isSecure**:
@@ -252,7 +252,7 @@ conn.close()
 ## isAlive
 
 ```python
-isAlive(self):
+isAlive(self)
 ```
 
 This method determines if the connection to the hypervisor is still alive. A connection will be classed as alive if it is either local, or running over a channel (TCP or UNIX socket) which is not closed.
@@ -275,7 +275,7 @@ conn.close()
 ## compareCPU
 
 ```python
-compareCPU(self, xmlDesc, flags=0):
+compareCPU(self, xmlDesc, flags=0)
 ```
 
 This method compares the given CPU description with the host CPU. This *xmlDesc* argument is the same used in the XML description for domain descriptions.
@@ -312,7 +312,7 @@ conn.close()
 ## getFreeMemory
 
 ```python
-getFreeMemory(self):
+getFreeMemory(self)
 ```
 
 This method compares the given CPU description with the host CPU.
@@ -338,7 +338,7 @@ conn.close()
 ## getFreePages
 
 ```python
-getFreePages(self, pages, startCell, maxCells, flags=0):
+getFreePages(self, pages, startCell, maxCells, flags=0)
 ```
 
 This method queries the host system for free pages of specified size. The *pages* argument is a **list** of page sizes that caller is interested in (the size unit is kilobytes, so e.g. pass 2048 for 2MB). The *startCell* argument refers to the first NUMA node that info should be collected from. The *maxCells* argument indicates how many consecutive nodes should be queried. The return value is a **list** containing an indicator of whether or not pages of the specified input sizes are available. An exception will be raised if the host system does not support memory pages of the size requested.
@@ -368,7 +368,7 @@ conn.close()
 ## getMemoryParameters
 
 ```python
-getMemoryParameters(self, flags=0):
+getMemoryParameters(self, flags=0)
 ```
 
 This method returns all the available memory parameters as strings.
@@ -393,7 +393,7 @@ conn.close()
 ## getMemoryStats
 
 ```python
-getMemoryStats(self, cellNum, flags=0):
+getMemoryStats(self, cellNum, flags=0)
 ```
 This method extracts node's memory statistics for either a single or all and single node (host). It returns a **list** of strings.
 

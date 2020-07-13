@@ -38,7 +38,7 @@ domXML = """
     </devices>
 </domain>"""
 
-def qemu_img_create(file_path, fmt="qcow2", size=None, backing_file=None):
+def qemu_img_create(file_path, fmt="qcow2", size=None, backing_file=None)
     cmd = ["qemu-img", "create", "-f", fmt]
     if backing_file:
         cmd.extend(["-b", backing_file])
