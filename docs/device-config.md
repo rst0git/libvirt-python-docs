@@ -30,7 +30,7 @@ if not dom:
     print("Failed to find domain ID " + str(domID), file=sys.stderr)
     exit(1)
 
-raw_xml = dom.XMLDesc(0)
+raw_xml = dom.XMLDesc()
 xml = minidom.parseString(raw_xml)
 domainTypes = xml.getElementsByTagName("type")
 for domainType in domainTypes:
@@ -61,7 +61,7 @@ if not dom:
     print("Failed to find domain ID " + str(domID), file=sys.stderr)
     exit(1)
 
-raw_xml = dom.XMLDesc(0)
+raw_xml = dom.XMLDesc()
 xml = minidom.parseString(raw_xml)
 domainEmulator = xml.getElementsByTagName("emulator")
 print("emulator: " + domainEmulator[0].firstChild.data)
@@ -99,7 +99,7 @@ if not dom:
     print("Failed to find domain ID " + str(domID), file=sys.stderr)
     exit(1)
 
-raw_xml = dom.XMLDesc(0)
+raw_xml = dom.XMLDesc()
 xml = minidom.parseString(raw_xml)
 
 diskTypes = xml.getElementsByTagName("disk")
@@ -156,7 +156,7 @@ if not dom:
     print("Failed to find domain ID " + str(domID), file=sys.stderr)
     exit(1)
 
-raw_xml = dom.XMLDesc(0)
+raw_xml = dom.XMLDesc()
 xml = minidom.parseString(raw_xml)
 
 interfaceTypes = xml.getElementsByTagName("interface")
@@ -208,7 +208,7 @@ if not dom:
     print("Failed to find domain ID" + str(domID), file=sys.stderr)
     exit(1)
 
-raw_xml = dom.XMLDesc(0)
+raw_xml = dom.XMLDesc()
 xml = minidom.parseString(raw_xml)
 devicesTypes = xml.getElementsByTagName("input")
 for inputType in devicesTypes:
