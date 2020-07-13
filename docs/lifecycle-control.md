@@ -469,9 +469,7 @@ if not dom:
     print("Failed to find the domain " + domName, file=sys.stderr)
     exit(1)
 
-flags = libvirt.VIR_MIGRATE_LIVE
-
-new_dom = dom.migrate(dst_conn, flags=flags, dname=None, uri=None, bandwidth=0)
+new_dom = dom.migrate(dst_conn, flags=0, dname=None, uri=None, bandwidth=0)
 if not new_dom:
     print("Could not migrate to the new domain", file=sys.stderr)
     exit(1)
