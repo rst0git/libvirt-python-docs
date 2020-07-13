@@ -21,14 +21,11 @@ In all three cases there is a name parameter which in fact refers to the URI of 
 The **open** function will attempt to open a connection for full read-write access. It does not have any scope for authentication callbacks to be provided, so it will only succeed for connections where authentication can be done based on the credentials of the application.
 
 ```python
-import sys
 import libvirt
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
-
+    raise SystemExit("Failed to open connection to qemu:///system")
 conn.close()
 ```
 
@@ -39,14 +36,11 @@ The above example opens up a read-write connection to the system `qemu` hypervis
 The **openReadOnly** function will attempt to open a connection for read-only access. Such a connection has a restricted set of method calls that are allowed, and is typically useful for monitoring applications that should not be allowed to make changes. As with **open**, this method has no scope for authentication callbacks, so it relies on credentials.
 
 ```python
-import sys
 import libvirt
 
 conn = libvirt.openReadOnly("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
-
+    raise SystemExit("Failed to open connection to qemu:///system")
 conn.close()
 ```
 
@@ -57,7 +51,6 @@ The above example opens up a read-only connection to the system qemu hypervisor 
 The **openAuth** function is the most flexible, and effectively obsoletes the previous two functions. It takes an extra parameter providing a *list* which contains the authentication credentials from the client app. The flags parameter allows the application to request a read-only connection with the `VIR_CONNECT_RO` flag if desired. A simple example that uses **openAuth** with *username* and *password* credentials follows. As with **open**, this method has no scope for authentication callbacks, so it relies on credentials.
 
 ```python
-import sys
 import libvirt
 
 SASL_USER = "my-super-user"
@@ -75,8 +68,7 @@ auth = [[libvirt.VIR_CRED_AUTHNAME, libvirt.VIR_CRED_PASSPHRASE], request_cred, 
 
 conn = libvirt.openAuth("qemu+tcp://localhost/system", auth, 0)
 if not conn:
-    print("Failed to open connection to qemu+tcp://localhost/system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu+tcp://localhost/system")
 
 conn.close()
 ```
@@ -108,18 +100,15 @@ A connection must be released by calling the `close` method of the **virConnecti
 Connections are reference counted; the count is explicitly increased by the initial (**open**, **openAuth**, and the like); it is also temporarily increased by other methods that depend on the connection remaining alive. The **open** function call should have a matching **close**, and all other references will be released after the corresponding operation completes.
 
 ```python
-import sys
 import libvirt
 
 conn1 = libvirt.open("qemu:///system")
 if not conn1:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 conn2 = libvirt.open("qemu:///system")
 if not conn2:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 conn1.close()
 conn2.close()

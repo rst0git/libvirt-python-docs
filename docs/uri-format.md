@@ -31,13 +31,11 @@ The following drivers are currently supported:
 The following example shows how to connect to a local QEMU hypervisor using a local URI.
 
 ```
-import sys
 import libvirt
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 conn.close()
 ```
 
@@ -126,12 +124,10 @@ Example: `no_tty=1`
 The following example shows how to connect to a QEMU hypervisor using a remote URI.
 
 ```python
-import sys
 import libvirt
 
 conn = libvirt.open("qemu+tls://host2/system")
 if not conn:
-    print("Failed to open connection to qemu+tls://host2/system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu+tls://host2/system")
 conn.close()
 ```

@@ -14,21 +14,16 @@ VIR_DOMAIN_XML_MIGRATABLE  = 8
 The following example shows how to obtain some basic information about the domain.
 
 ```python
-import sys
 import libvirt
 from xml.dom import minidom
 
-domID = 5
-
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
-dom = conn.lookupByID(domID)
+dom = conn.lookupByID(5)
 if not dom:
-    print("Failed to find domain ID " + str(domID), file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find domain ID 5")
 
 raw_xml = dom.XMLDesc()
 xml = minidom.parseString(raw_xml)
@@ -45,21 +40,16 @@ conn.close()
 To discover the guest domain's emulator find and display the content of the emulator XML tag.
 
 ```python
-import sys
 import libvirt
 from xml.dom import minidom
 
-domID = 5
-
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
-dom = conn.lookupByID(domID)
+dom = conn.lookupByID(5)
 if not dom:
-    print("Failed to find domain ID " + str(domID), file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find domain ID 5")
 
 raw_xml = dom.XMLDesc()
 xml = minidom.parseString(raw_xml)
@@ -83,21 +73,16 @@ The XML configuration for the Emulator is typically as follows:
 
 
 ```python
-import sys
 import libvirt
 from xml.dom import minidom
 
-domID = 1
-
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
-dom = conn.lookupByID(domID)
+dom = conn.lookupByID(1)
 if not dom:
-    print("Failed to find domain ID " + str(domID), file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find domain ID 1")
 
 raw_xml = dom.XMLDesc()
 xml = minidom.parseString(raw_xml)
@@ -140,21 +125,16 @@ The XML configuration for disks is typically as follows:
 ## Networking
 
 ```python
-import sys
 import libvirt
 from xml.dom import minidom
 
-domID = 1
-
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
-dom = conn.lookupByID(domID)
+dom = conn.lookupByID(1)
 if not dom:
-    print("Failed to find domain ID " + str(domID), file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find domain ID 1")
 
 raw_xml = dom.XMLDesc()
 xml = minidom.parseString(raw_xml)
@@ -192,35 +172,31 @@ The XML configuration for network interfaces is typically as follows:
 To discover the guest domain's input devices find and display the input XML tags.
 
 ```python
-import sys
 import libvirt
 from xml.dom import minidom
 
-domID = 1
-
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
-dom = conn.lookupByID(domID)
+dom = conn.lookupByID(1)
 if not dom:
-    print("Failed to find domain ID" + str(domID), file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find domain ID 1")
 
 raw_xml = dom.XMLDesc()
 xml = minidom.parseString(raw_xml)
 devicesTypes = xml.getElementsByTagName("input")
 for inputType in devicesTypes:
-    print("input: type=" + inputType.getAttribute("type") +
-          " bus=" + inputType.getAttribute("bus"))
-    inputNodes = inputType.childNodes
-    for inputNode in inputNodes:
+    print("input: type={} bus={}".format(
+        inputType.getAttribute("type"),
+        inputType.getAttribute("bus")))
+    for inputNode in inputType.childNodes:
         if inputNode.nodeName[0:1] != "#":
-            print("  "+inputNode.nodeName)
+            print("  " + inputNode.nodeName)
             for attr in inputNode.attributes.keys():
-                print("    " + inputNode.attributes[attr].name +
-                      " = " + inputNode.attributes[attr].value)
+                print("    {} = {}".format(
+                    inputNode.attributes[attr].name,
+                    inputNode.attributes[attr].value))
 conn.close()
 ```
 

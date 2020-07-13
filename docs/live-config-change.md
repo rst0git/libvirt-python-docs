@@ -16,7 +16,6 @@ Use **blockJobSetSpeed()** to limit the amount of bandwidth that a block job may
 
 ```python
 import os
-import sys
 import time
 import libvirt
 import subprocess
@@ -38,6 +37,9 @@ domXML = """
     </devices>
 </domain>"""
 
+base_img = "/var/lib/libvirt/images/base.qcow2"
+rw_layer = "/var/lib/libvirt/images/example.qcow2"
+
 def qemu_img_create(file_path, fmt="qcow2", size=None, backing_file=None)
     cmd = ["qemu-img", "create", "-f", fmt]
     if backing_file:
@@ -53,22 +55,16 @@ def build_domain(conn, base_img, top_layer):
     dom = conn.createXML(domXML.format(disk_img=top_layer), 0)
     return dom
 
-base_img = "/var/lib/libvirt/images/base.qcow2"
-rw_layer = "/var/lib/libvirt/images/example.qcow2"
-
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 dom = build_domain(conn, base_img, rw_layer)
 if not dom:
-    print("Failed to create domain", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to create domain")
 
 if dom.blockPull(rw_layer, 0, 0) < 0:
-    print("Failed to start block pull", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to start block pull")
 
 while True:
     info = dom.blockJobInfo(rw_layer, 0)
@@ -79,11 +75,8 @@ while True:
     else:
         break
 
-if dom:
-   dom.destroy()
-
+dom.destroy()
 os.unlink(base_img)
 os.unlink(rw_layer)
-
 conn.close()
 ```

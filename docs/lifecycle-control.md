@@ -27,23 +27,19 @@ If the `VIR_DOMAIN_START_PAUSED` flag is set, the guest domain will be started, 
 If the `VIR_DOMAIN_START_AUTODESTROY` flag is set, the guest domain will be automatically destroyed when the **virConnect** object is finally released. This will also happen if the client application crashes or loses its connection to the libvirtd daemon. Any domains marked for auto destroy will block attempts at migration, save-to-file, or snapshots.
 
 ```python
-import sys
 import libvirt
 
 xmlconfig = "<domain>...</domain>"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
-dom = conn.createXML(xmlconfig, 0)
+dom = conn.createXML(xmlconfig)
 if not dom:
-    print("Failed to create a domain from an XML definition.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to create a domain from an XML definition")
 
-print("Guest " + dom.name() + " has booted", file=sys.stderr)
-
+print("Guest " + dom.name() + " has booted")
 conn.close()
 ```
 
@@ -56,27 +52,22 @@ Before a persistent domain can be booted, it must have its configuration defined
 Currently the **defineDomain** method defines a flags parameter that is unused. A value of **0** should always be supplied for that parameter. This may be changed in later versions of the method.
 
 ```python
-import sys
 import libvirt
 
 xmlconfig = "<domain>...</domain>"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
-dom = conn.defineXML(xmlconfig, 0)
+dom = conn.defineXML(xmlconfig)
 if not dom:
-    print("Failed to define a domain from an XML definition.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to define a domain from an XML definition")
 
 if dom.create(dom) < 0:
-    print("Can not boot guest domain.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Can not boot guest domain")
 
-print("Guest " + dom.name() + " has booted", file=sys.stderr)
-
+print("Guest " + dom.name() + " has booted")
 conn.close()
 ```
 
@@ -146,27 +137,22 @@ NB, this assumes the hard disk boot sector is blank initially, so that the first
 With the configuration determined, it is now possible to provision the guest. This is an easy process, simply requiring a persistent guest to be defined, and then booted.
 
 ```python
-import sys
 import libvirt
 
 xmlconfig = "<domain>...</domain>"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
-dom = conn.defineXML(xmlconfig, 0)
+dom = conn.defineXML(xmlconfig)
 if not dom:
-    print("Failed to define a domain from an XML definition.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to define a domain from an XML definition")
 
 if dom.create(dom) < 0:
-    print("Can not boot guest domain.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Can not boot guest domain")
 
-print("Guest " + dom.name() + " has booted", file=sys.stderr)
-
+print("Guest " + dom.name() + " has booted")
 conn.close()
 ```
 
@@ -193,27 +179,22 @@ The guest configuration shown earlier would have the following XML chunk inserte
 NB, this assumes the hard disk boot sector is blank initially, so that the first boot attempt falls through to the NIC. With the configuration determined, it is now possible to provision the guest. This is an easy process, simply requiring a persistent guest to be defined, and then booted.
 
 ```python
-import sys
 import libvirt
 
 xmlconfig = "<domain>...</domain>"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
-dom = conn.defineXML(xmlconfig, 0)
+dom = conn.defineXML(xmlconfig)
 if not dom:
-    print("Failed to define a domain from an XML definition.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to define a domain from an XML definition")
 
 if dom.create(dom) < 0:
-    print("Can not boot guest domain.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Can not boot guest domain")
 
-print("Guest " + dom.name() + " has booted", file=sys.stderr)
-
+print("Guest " + dom.name() + " has booted")
 conn.close()
 ```
 
@@ -239,23 +220,19 @@ Notice how the kernel command line provides the URL of download site containing 
 The last XML configuration detail before starting the guest, is to change the `on_reboot` element action to be `destroy`. This ensures that when the guest installer finishes and requests a reboot, the guest is instead powered off. This allows the management application to change the configuration to make it boot off, just installed, the hard disk again. The provisioning process can be started now by creating a transient guest with the first XML configuration
 
 ```python
-import sys
 import libvirt
 
 xmlconfig = "<domain>...</domain>"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 dom = conn.createXML(xmlconfig, 0)
 if not dom:
-    print("Unable to boot transient guest configuration.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Unable to boot transient guest configuration")
 
-print("Guest "+dom.name()+" has booted", file=sys.stderr)
-
+print("Guest " + dom.name() + " has booted")
 conn.close()
 ```
 
@@ -282,27 +259,22 @@ while a fully-virtualized guest would use:
 With the second phase configuration determined, the guest can be recreated, this time using a persistent configuration
 
 ```python
-import sys
 import libvirt
 
 xmlconfig = "<domain>...</domain>"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 dom = conn.createXML(xmlconfig, 0)
 if not dom:
-    print("Unable to define persistent guest configuration.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Unable to define persistent guest configuration")
 
 if dom.create(dom) < 0:
-    print("Can not boot guest domain.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Can not boot guest domain")
 
-print("Guest " + dom.name() + " has booted", file=sys.stderr)
-
+print("Guest " + dom.name() + " has booted")
 conn.close()
 ```
 
@@ -328,35 +300,29 @@ It is important to note that the save/restore methods only save the memory state
 The save operation requires the fully qualified path to a file in which the guest memory state will be saved. This filename is in the hypervisor's file system, not the libvirt client application's. There's no difference between the two if managing a local hypervisor, but it is critically important if connecting remotely to a hypervisor across the network. The example that follows demonstrates saving a guest called "demo-guest" to a file. It checks to verify that the guest is running before saving, though this is technically redundant since the hypervisor driver will do such a check itself.
 
 ```python
-import sys
 import libvirt
 
 filename = "/var/lib/libvirt/save/demo-guest.img"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 dom = conn.lookupByName("demo-guest")
 if not dom:
-    print("Cannot find guest to be saved.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Cannot find guest to be saved")
 
 info = dom.info()
 if not info:
-    print("Cannot check guest state", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Cannot check guest state")
 
 if info.state == VIR_DOMAIN_SHUTOFF:
-    print("Not saving guest that is not running", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Not saving guest that is not running")
 
 if dom.save(filename) < 0:
-    print("Unable to save guest to " + filename, file=sys.stderr)
+    print("Unable to save guest to " + filename)
 
-print("Guest state saved to " + filename, file=sys.stderr)
-
+print("Guest state saved to " + filename)
 conn.close()
 ```
 
@@ -367,28 +333,23 @@ In addition, the saveFlags methods allows the domain to be save and at the same 
 There is also another way to save a domain. The managedSave method can also save a running domain state, only in this case The system selects the location for the saved image. In addition, the domain will be restored to the save state when the domain is restarted.
 
 ```python
-import sys
 import libvirt
 
 filename = "/var/lib/libvirt/save/demo-guest.img"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 domID = conn.restore(filename))
 if domID < 0:
-    print("Unable to restore guest from " + filename, file=sys.stderr)
-    exit(1)
+    raise SystemExit("Unable to restore guest from " + filename)
 
 dom = conn.lookupByID(domID)
 if not dom:
-    print("Cannot find guest that was restored", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Cannot find guest that was restored")
 
-print("Guest state restored from " + filename, file=sys.stderr)
-
+print("Guest state restored from " + filename)
 conn.close()
 ```
 
@@ -449,33 +410,27 @@ The fifth and last parameter of the **migrate** method specifies the bandwidth i
 To migrate a guest domain to a connection that is already open use the **migrate** method. An example follows:
 
 ```python
-import sys
 import libvirt
 
 domName = "Fedora32-x86_64-1"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 dst_conn = libvirt.open("qemu+ssh://dst/system")
 if not conn:
-    print("Failed to open connection to qemu+ssh://dst/system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu+ssh://dst/system")
 
 dom = conn.lookupByName(domName)
 if not dom:
-    print("Failed to find the domain " + domName, file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find the domain " + domName)
 
 new_dom = dom.migrate(dst_conn, flags=0, dname=None, uri=None, bandwidth=0)
 if not new_dom:
-    print("Could not migrate to the new domain", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Could not migrate to the new domain")
 
-print("Domain was migrated successfully.", file=sys.stderr)
-
+print("Domain was migrated successfully")
 dst_conn.close()
 conn.close()
 ```
@@ -483,61 +438,48 @@ conn.close()
 The **migrateToURI** method is similar except that the destination URI is the first parameter instead of an existing connection. To migrate a guest domain to a URI use the **migrateToURI** method. An example follows:
 
 ```python
-import sys
 import libvirt
 
 domName = "Fedora32-x86_64-1"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 dom = conn.lookupByName(domName)
 if not dom:
-    print("Failed to find the domain " + domName, file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find the domain " + domName)
 
 new_dom = dom.migrateToURI("qemu+ssh://dst/system", 0, None, 0)
 if new_not dom:
-    print("Could not migrate to the new domain", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Could not migrate to the new domain")
 
-print("Domain was migrated successfully.", file=sys.stderr)
-
+print("Domain was migrated successfully")
 conn.close()
 ```
 
 To migrate a live guest domain to a URI use the migrate or the **migrateToURI** with the `VIR_MIGRATE_LIVE` flag set. An example follows:
 
 ```python
-import sys
 import libvirt
-
-domID = 6
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 dst_conn = libvirt.open("qemu+ssh://dst/system")
 if not conn:
-    print("Failed to open connection to qemu+ssh://dst/system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu+ssh://dst/system")
 
-dom = conn.lookupByID(domID)
+dom = conn.lookupByID(6)
 if not dom:
-    print("Failed to find domain ID " + str(domID), file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find domain ID 6")
 
 new_dom = dom.migrate(dst_conn, libvirt.VIR_MIGRATE_LIVE, None, None, 0)
 if new_not dom:
-    print("Could not migrate to the new domain", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Could not migrate to the new domain")
 
-print("Domain was migrated successfully.", file=sys.stderr)
-
+print("Domain was migrated successfully")
 dst_conn.close()
 conn.close()
 ```
@@ -549,22 +491,16 @@ In addition to the **migrate** method, there are the alternative methods **migra
 A guest domain can be configured to autostart on a particular hypervisor, either by the hypervisor itself or libvirt. In combination with managed save, this allows the operating system on a guest domain to withstand host reboots without ever considering itself to have rebooted. When libvirt restarts, the guest domain will be automatically restored. This is handled by an API separate to regular save and restore, because paths must be known to libvirt without user input.
 
 ```python
-import sys
 import libvirt
-
-domID = 6
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
-dom = conn.lookupByID(domID)
+dom = conn.lookupByID(6)
 if not dom:
-    print("Failed to find domain ID " + str(domID), file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find domain ID 6")
 
 dom.setAutostart(1)  # enable autostart
-
 conn.close()
 ```

@@ -5,13 +5,11 @@ The **getCapabilities** method call can be used to obtain information about the 
 The following code demonstrates the use of the **getCapabilities** method:
 
 ```python
-import sys
 import libvirt
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 caps = conn.getCapabilities()  # caps will be a string of XML
 print("Capabilities:\n" + caps)

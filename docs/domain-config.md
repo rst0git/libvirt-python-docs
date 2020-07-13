@@ -50,20 +50,15 @@ Memory resources are also set at domain creation using tags in the XML definitio
 After the domain has been created the number of virtual CPUs can be increased via the **setVcpus** or the **setVcpusFlags** methods. The number CPUs may not exceed the hypervisor maximum discussed above.
 
 ```python
-import sys
 import libvirt
-
-domID = 6
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
-dom = conn.lookupByID(domID)
+dom = conn.lookupByID(6)
 if not dom:
-    print("Failed to find domain ID " + str(domID), file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find domain ID 6")
 
 dom.setVcpus(2)
 conn.close()
@@ -72,20 +67,15 @@ conn.close()
 Also after the domain has been created the amount of memory can be changes via the **setMemory** or the **setMemoryFlags** methods. The amount of memory should be expressed in kilobytes.
 
 ```python
-import sys
 import libvirt
-
-domID = 6
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
-dom = conn.lookupByID(domID)
+dom = conn.lookupByID(6)
 if not dom:
-    print("Failed to find domain ID " + str(domID), file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find domain ID 6")
 
 dom.setMemory(4096) # 4 GigaBytes
 conn.close()

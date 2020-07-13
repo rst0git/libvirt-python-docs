@@ -67,18 +67,15 @@ VIR_CONNECT_LIST_STORAGE_POOLS_ISCSI_DIRECT  = 524288
 The following example shows how to obtain some basic information about available storage pools:
 
 ```python
-import sys
 import libvirt
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 pools = conn.listAllStoragePools()
 if not pools:
-    print("Failed to locate any StoragePool objects.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to locate any StoragePool objects.")
 
 for pool in pools:
     print("Pool: " + pool.name())
@@ -91,18 +88,15 @@ conn.close()
 There are a number of methods available in the **virStoragePool** class. The following example program features a number of the methods which describe some attributes of a pool.
 
 ```python
-import sys
 import libvirt
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 pool = conn.storagePoolLookupByName("images")
 if not pool:
-    print("Failed to locate any StoragePool objects.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to locate any StoragePool objects.")
 
 info = pool.info()
 
@@ -135,18 +129,15 @@ VIR_STORAGE_XML_INACTIVE = 1
 The following example shows how to get the XML description of a storage pool.
 
 ```python
-import sys
 import libvirt
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 pool = conn.storagePoolLookupByName("default")
 if not pool:
-    print("Failed to locate any StoragePool objects.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to locate any StoragePool objects.")
 
 xml = pool.XMLDesc()
 print(xml)
@@ -159,7 +150,6 @@ conn.close()
 The following example shows how to create and destroy both a persistent and a non-persistent storage pool. Note that a storage pool can not be destroyed if it is in a active state. By default storage pools are created in a inactive state.
 
 ```python
-import sys
 import libvirt
 xmlDesc = """
 <pool type="dir">
@@ -182,20 +172,17 @@ xmlDesc = """
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 pool = conn.storagePoolDefineXML(xmlDesc, 0)
 if not pool:
-    print("Failed to create StoragePool object.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to create StoragePool object.")
 
 pool.undefine()
 
 pool = conn.storagePoolCreateXML(xmlDesc, 0)
 if not pool:
-    print("Failed to create StoragePool object.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to create StoragePool object.")
 
 pool.undefine()
 
@@ -212,7 +199,6 @@ The sources for a storage pool's sources can be discovered by examining the pool
 Currently the flags parameter for the **storagePoolCreateXML** method should always be **0**.
 
 ```python
-import sys
 import libvirt
 from xml.dom import minidom
 
@@ -220,13 +206,11 @@ poolName = "default"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 sp = conn.storagePoolLookupByName(poolName)
 if not sp:
-    print("Failed to find storage pool " + poolName, file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find storage pool " + poolName)
 
 raw_xml = sp.XMLDesc()
 xml = minidom.parseString(raw_xml)
@@ -248,20 +232,17 @@ conn.close()
 There are a number of methods which can configure aspects of a storage pool. The main method is the **setAutostart** method.
 
 ```python
-import sys
 import libvirt
 
 poolName = "default"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 sp = conn.storagePoolLookupByName(poolName)
 if not sp:
-    print("Failed to find storage pool " + poolName, file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find storage pool " + poolName)
 
 print("Current autostart setting: " + str(sp.autostart()))
 if sp.autostart():
@@ -282,7 +263,6 @@ Storage volumes are the basic unit of storage which house a guest domain's stora
 The following example program demonstrates how to list all the storage volumes contained by the `default` storage pool.
 
 ```python
-import sys
 import libvirt
 from xml.dom import minidom
 
@@ -290,13 +270,11 @@ poolName = "default"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 sp = conn.storagePoolLookupByName(poolName)
 if not sp:
-    print("Failed to find storage pool " + poolName, file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to find storage pool " + poolName)
 
 stgvols = sp.listVolumes()
 print("Storage pool: " + poolName)
@@ -311,18 +289,15 @@ conn.close()
 Information about a storage volume is obtained by using the info method. The following program shows how to list the information about each storage volume in the `default` storage pool.
 
 ```python
-import sys
 import libvirt
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 pool = conn.storagePoolLookupByName("default")
 if not pool:
-    print("Failed to locate any StoragePool objects.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to locate any StoragePool objects.")
 
 stgvols = pool.listVolumes()
 
@@ -350,7 +325,6 @@ VIR_STORAGE_VOL_CREATE_REFLINK = 2
 ```
 
 ```python
-import sys
 import libvirt
 
 stgvol_xml = """
@@ -373,18 +347,15 @@ pool = "default"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 pool = conn.storagePoolLookupByName(pool)
 if not pool:
-    print("Failed to locate any StoragePool objects.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to locate any StoragePool objects.")
 
 stgvol = pool.createXML(stgvol_xml, 0)
 if not stgvol:
-    print("Failed to create a  StorageVol objects.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to create a  StorageVol objects.")
 
 # remove the storage volume
 # physically remove the storage volume from the underlying disk media
@@ -402,7 +373,6 @@ Cloning a storage volume is similar to creating a new storage volume, except tha
 It should be noted that cloning can take a very long time to accomplish, depending on the size of the storage volume being cloned. This is because the clone process copies the data from the source volume to the new target volume.
 
 ```python
-import sys
 import libvirt
 
 stgvol_xml = """
@@ -441,26 +411,22 @@ pool = "default"
 
 conn = libvirt.open("qemu:///system")
 if not conn:
-    print("Failed to open connection to qemu:///system", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to open connection to qemu:///system")
 
 pool = conn.storagePoolLookupByName(pool)
 if not pool:
-    print("Failed to locate any StoragePool objects.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to locate any StoragePool objects.")
 
 # create a new storage volume
 stgvol = pool.createXML(stgvol_xml, 0)
 if not stgvol:
-    print("Failed to create a  StorageVol object.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to create a  StorageVol object.")
 
 # now clone the existing storage volume
 print("This could take some time...")
 stgvol2 = pool.createXMLFrom(stgvol_xml2, stgvol, 0)
 if not stgvol2:
-    print("Failed to clone a  StorageVol object.", file=sys.stderr)
-    exit(1)
+    raise SystemExit("Failed to clone a  StorageVol object.")
 
 stgvol2.wipe()
 stgvol2.delete()
