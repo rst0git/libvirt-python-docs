@@ -16,6 +16,10 @@ nav:
 theme:
   name: readthedocs
   favicon: img/favicon.ico
+  navigation_depth: 2
+
+extra_css:
+    - css/extra.css
 
 markdown_extensions:
     - admonition

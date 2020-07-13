@@ -2,11 +2,9 @@
 
 There are various **virConnection** methods that can be used to get information about the virtualization host, including the hostname, maximum support guest CPUs, etc.
 
-## getHostname
+## virConnection
 
-```python
-getHostname(self)
-```
+### <span>virConnection.**getHostname**(*self*)</span>
 
 This returns a system hostname on which the hypervisor is running (based on the result of the gethostname system call, but possibly expanded to a fully-qualified domain name via getaddrinfo). If we are connected to a remote system, then this returns the hostname of the remote system.
 The following code demonstrates the use of **getHostname**:
@@ -24,11 +22,7 @@ print("Hostname: " + host)
 conn.close()
 ```
 
-## getMaxVcpus
-
-```python
-getMaxVcpus(self, type)
-```
+### <span>virConnection.**getMaxVcpus**(*self*, *type*)</span>
 
 This method can be used to obtain the maximum number of virtual CPUs per-guest the underlying virtualization technology supports. It takes a virtualization *type* as input (which can be **None**), and if successful, returns the number of virtual CPUs supported. If an error occurred, -1 is returned instead. The following code demonstrates the use of **getMaxVcpus**:
 
@@ -45,13 +39,9 @@ print("Maximum support virtual CPUs: {}".format(vcpus))
 conn.close()
 ```
 
-## getInfo
+### <span>virConnection.**getInfo**(*self*)</span>
 
-```python
-getInfo(self)
-```
-
- This method can be used to obtain various information about the virtualization host. The method returns a **list** if successful and **None** if an error occurred. The list contains the following members:
+This method can be used to obtain various information about the virtualization host. The method returns a **list** if successful and **None** if an error occurred. The list contains the following members:
 
 - **list[0]:** string indicating the CPU model
 - **list[1]:** memory size in megabytes
@@ -80,9 +70,7 @@ print("Model: {}\n"
       "Number of NUMA nodes: {}\n"
       "Number of CPU sockets: {}\n"
       "Number of CPU cores per socket: {}\n"
-      "Number of CPU threads per core: {}".format(
-    nodeinfo[0], nodeinfo[1], nodeinfo[2], nodeinfo[3],
-    nodeinfo[4], nodeinfo[5], nodeinfo[6], nodeinfo[7]))
+      "Number of CPU threads per core: {}".format(*nodeinfo))
 
 conn.close()
 ```
@@ -90,11 +78,7 @@ conn.close()
 !!! note "Note:"
     Memory size is reported in MiB instead of KiB.
 
-## getCellsFreeMemory
-
-```python
-getCellsFreeMemory(self, startCell, maxCells):
-```
+### <span>virConnection.**getCellsFreeMemory**(*self*, *startCell*, *maxCells*)</span>
 
 The **getCellsFreeMemory** method can be used to obtain the amount of free memory (in kilobytes) in some or all of the NUMA nodes in the system. It takes as input the starting cell and the maximum number of cells to retrieve data from. If successful, a **list** is returned with the amount of free memory in each node. On failure **None** is returned. The following code demonstrates the use of **getCellsFreeMemory**:
 
@@ -116,19 +100,11 @@ for cellfreemem in memlist:
 conn.close()
 ```
 
-## getType
-
-```python
-getType(self)
-```
+### <span>virConnection.**getType**(*self*)</span>
 
 This method can be used to obtain the type of virtualization in use on this connection. If successful it returns a **string** representing the type of virtualization in use. If an error occurred, **None** will be returned instead.
 
-## getVersion
-
-```python
-getVersion(name=None)
-```
+### <span>virConnection.**getVersion**(*name=None*)</span>
 
 - If no *name* parameter is passed (or *name* is **None**) then the version of the libvirt library is returned as number. Versions numbers are integers:
 ```text
@@ -149,11 +125,7 @@ print("Version: {}".format(ver))
 conn.close()
 ```
 
-## getLibVersion
-
-```python
-getLibVersion(self)
-```
+### <span>virConnection.**getLibVersion**(*self*)</span>
 
 This method can be used to obtain the version of the libvirt software in use on the host. If successful it returns a **string** with the version, otherwise it returns **None**.
 
@@ -169,11 +141,7 @@ print("Libvirt Version: {}".format(ver))
 conn.close()
 ```
 
-## getURI
-
-```python
-getURI(self)
-```
+### <span>virConnection.**getURI**(*self*)</span>
 
 The **getURI** method can be used to obtain the URI for the current connection. While this is typically the same string that was passed into the **open** call, the underlying driver can sometimes canonicalize the string. This method will return the canonical version. If successful, it returns a URI **string**. If an error occurred, **None** will be returned instead. The following code demonstrates the use of getURI:
 
@@ -189,11 +157,7 @@ print("Canonical URI: " + uri)
 conn.close()
 ```
 
-## isEncrypted
-
-```python
-isEncrypted(self)
-```
+### <span>virConnection.**isEncrypted**(*self*)</span>
 
 This method can be used to find out if a given connection is encrypted. If successful it returns **1** for an encrypted connection and **0** for an unencrypted connection. If an error occurred, **-1** will be returned. The following code demonstrates the use of **isEncrypted**:
 
@@ -208,11 +172,7 @@ print("Connection is encrypted: {}".format(conn.isEncrypted()))
 conn.close()
 ```
 
-## isSecure
-
-```python
-isSecure(self)
-```
+### <span>virConnection.**isSecure**(*self*)</span>
 
 This method can be used to find out if a given connection is classified as secure. A connection will be classified secure if it is either encrypted or it is running on a channel which is not vulnerable to eavesdropping (like a UNIX domain socket). If successful it returns **1** for a secure connection and **0** for an insecure connection. If an error occurred, **-1** will be returned. The following code demonstrates the use of **isSecure**:
 
@@ -227,11 +187,7 @@ print("Connection is secure: {}".format(conn.isSecure()))
 conn.close()
 ```
 
-## isAlive
-
-```python
-isAlive(self)
-```
+### <span>virConnection.**isAlive**(*self*)</span>
 
 This method determines if the connection to the hypervisor is still alive. A connection will be classed as alive if it is either local, or running over a channel (TCP or UNIX socket) which is not closed.
 
@@ -247,11 +203,7 @@ print("Connection is alive = {}".format(alive))
 conn.close()
 ```
 
-## compareCPU
-
-```python
-compareCPU(self, xmlDesc, flags=0)
-```
+### <span>virConnection.**compareCPU**(*self*, *xmlDesc*, *flags*=*0*)</span>
 
 This method compares the given CPU description with the host CPU. This *xmlDesc* argument is the same used in the XML description for domain descriptions.
 
@@ -283,11 +235,7 @@ else:
 conn.close()
 ```
 
-## getFreeMemory
-
-```python
-getFreeMemory(self)
-```
+### <span>virConnection.**getFreeMemory**(*self*)</span>
 
 This method compares the given CPU description with the host CPU.
 
@@ -305,11 +253,7 @@ print("Free memory on the node (host) is {} bytes".format(mem))
 conn.close()
 ```
 
-## getFreePages
-
-```python
-getFreePages(self, pages, startCell, maxCells, flags=0)
-```
+### <span>virConnection.**getFreePages**(*self*, *pages*, *startCell*, *maxCells*, *flags=0*)</span>
 
 This method queries the host system for free pages of specified size. The *pages* argument is a **list** of page sizes that caller is interested in (the size unit is kilobytes, so e.g. pass 2048 for 2MB). The *startCell* argument refers to the first NUMA node that info should be collected from. The *maxCells* argument indicates how many consecutive nodes should be queried. The return value is a **list** containing an indicator of whether or not pages of the specified input sizes are available. An exception will be raised if the host system does not support memory pages of the size requested.
 
@@ -333,11 +277,7 @@ for page in buf:
 conn.close()
 ```
 
-## getMemoryParameters
-
-```python
-getMemoryParameters(self, flags=0)
-```
+### <span>virConnection.**getMemoryParameters**(*self*, *flags=0*)</span>
 
 This method returns all the available memory parameters as strings.
 
@@ -356,11 +296,8 @@ for parm in buf:
 conn.close()
 ```
 
-## getMemoryStats
+### <span>virConnection.**getMemoryStats**(*self*, *cellNum*, *flags=0*)</span>
 
-```python
-getMemoryStats(self, cellNum, flags=0)
-```
 This method extracts node's memory statistics for either a single or all and single node (host). It returns a **list** of strings.
 
 ```python
