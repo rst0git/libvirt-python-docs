@@ -16,7 +16,7 @@ conn = libvirt.openReadOnly(name)
 
 In all three cases there is a name parameter which in fact refers to the URI of the hypervisor to connect to.
 
-## libvirt.open
+### <span>libvirt.**open**(*name=None*)</span>
 
 The **open** function will attempt to open a connection for full read-write access. It does not have any scope for authentication callbacks to be provided, so it will only succeed for connections where authentication can be done based on the credentials of the application.
 
@@ -31,7 +31,7 @@ conn.close()
 
 The above example opens up a read-write connection to the system `qemu` hypervisor driver, checks to make sure it was successful, and if so closes the connection.
 
-## libvirt.openReadOnly
+### <span>libvirt.**openReadOnly**(*name=None*)</span>
 
 The **openReadOnly** function will attempt to open a connection for read-only access. Such a connection has a restricted set of method calls that are allowed, and is typically useful for monitoring applications that should not be allowed to make changes. As with **open**, this method has no scope for authentication callbacks, so it relies on credentials.
 
@@ -46,7 +46,7 @@ conn.close()
 
 The above example opens up a read-only connection to the system qemu hypervisor driver, checks to make sure it was successful, and if so closes the connection.
 
-## libvirt.openAuth
+### <span>libvirt.**openAuth**(*uri*, *auth*, *flags=0*)</span>
 
 The **openAuth** function is the most flexible, and effectively obsoletes the previous two functions. It takes an extra parameter providing a *list* which contains the authentication credentials from the client app. The flags parameter allows the application to request a read-only connection with the `VIR_CONNECT_RO` flag if desired. A simple example that uses **openAuth** with *username* and *password* credentials follows. As with **open**, this method has no scope for authentication callbacks, so it relies on credentials.
 
@@ -93,7 +93,7 @@ mech_list: digest-md5
 
 Once the above is configured, `openAuth` can utilize the configured username and password and allow read-write access to libvirtd.
 
-## libvirt.close
+### <span>virConnect.**close**(*self*)</span>
 
 A connection must be released by calling the `close` method of the **virConnection** class when no longer required. Connections are reference counted objects, so there should be a corresponding call to the close method for each open function call.
 
