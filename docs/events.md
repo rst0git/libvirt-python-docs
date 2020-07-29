@@ -142,3 +142,42 @@ if __name__ == "__main__":
     while check_console(console):
         libvirt.virEventRunDefaultImpl()
 ```
+
+## Timer Handling
+
+The libvirt module supplies a framework for timer handling. Creating a timer requires that an event loop has previously been registered with **virEventRegisterImpl** or **virEventRegisterDefaultImpl**.
+
+Timer handling is done through the functions **virEventAddTimeout**, **virEventUpdateTimeout**, and **virEventRemoveTimeout**. The implementation will support many timers.
+
+To create a new timer call the **virEventAddTimout** after the **virEventRegisterImpl** or the **virEventRegisterDefaultImpl** function has been invoked.
+
+The timer can be removed using the **virEventRemoveTimeout** or updated with the **virEventUpdateTimeout** function after it has been added. 
+
+### <span>libvirt.**virEventAddTimeout**(*timeout*, *cb*, *opaque*)</span>
+Register a callback for a timer event.
+
+- *timeout*: time between events in milliseconds
+- *cb*: callback to invoke when an event occurs
+- *opaque*: user data to pass to callback
+
+Setting timeout to `-1` will disable the timer. Setting the timeout to zero will cause it to fire on every event loop iteration.
+
+Example callback prototype is:
+```python
+def cb(timer, opaque):
+    """
+    @timer: int id of the timer
+    @opaque: data passed to eventAddTimeout
+    """
+    pass
+```
+
+### <span>libvirt.**virEventUpdateTimeout**(*timer*, *timeout*)</span>
+Change frequency for a timer. This function requires that an event loop has previously been registered with **virEventRegisterImpl()** or **virEventRegisterDefaultImpl()**.
+
+Setting frequency to `-1` will disable the timer. Setting the frequency to zero will cause it to fire on every event loop iteration.
+
+### <span>libvirt.**virEventRemoveTimeout**(*timer*)</span>
+Unregister a callback for a timer. This function requires that an event loop has previously been registered with
+**virEventRegisterImpl()** or **virEventRegisterDefaultImpl()**.
+
