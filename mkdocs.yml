@@ -7,6 +7,7 @@ nav:
   - Connections: connections.md
   - Device configuration: device-config.md
   - Domain configuration: domain-config.md
+  - Event and Timer Handling: events.md
   - Host information: host-info.md
   - Lifecycle control: lifecycle-control.md
   - Live configuration change: live-config-change.md
